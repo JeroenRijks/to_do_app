@@ -1,4 +1,4 @@
-package com.java_journal.to_do_app;
+package com.to_do_app;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

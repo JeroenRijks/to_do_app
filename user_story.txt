@@ -1,0 +1,6 @@
+As a person with lots of things on, I want to stay organised by using my to do list app.
+This app should let me assign importance and urgency levels to my tasks,
+and sort my tasks into categories and subcategories such as work (work projects),
+admin (money, house, work admin etc).
+
+Optional features: email reminders for urgent tasks. Optional regular reminders for ongoing tasks.
