@@ -1,0 +1,76 @@
+databaseChangeLog:
+- changeSet:
+    id: 1536071405532-1
+    author: jeroen (generated)
+    changes:
+    - createSequence:
+        sequenceName: hibernate_sequence
+- changeSet:
+    id: 1536071405532-2
+    author: jeroen (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: categoriesPK
+            name: id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: category_id
+            type: INT
+        tableName: categories
+- changeSet:
+    id: 1536071405532-3
+    author: jeroen (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              primaryKeyName: tasksPK
+            name: id
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: category
+            type: VARCHAR(255)
+        - column:
+            name: date
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: importance
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        tableName: tasks
+- changeSet:
+    id: 1536071405532-4
+    author: jeroen (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: category_id
+        baseTableName: categories
+        constraintName: FKeqmudnnyfxr9lyqathpu9eie3
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: tasks
+

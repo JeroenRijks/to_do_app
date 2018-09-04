@@ -17,30 +17,34 @@ public class Task {
     private Integer id;
 
     @Column(name = "name", nullable = false)
-    private String task;
+    private String name;
 
     @Column(name = "category", nullable = false)
     private String category;
     // FK -> PK
 
     @Column(name = "importance", nullable = false)
-    private String importance;
+    private PriorityTypes importance;
+
     @Column(name = "date")
     private Date deadline;      // dd/mm/yy format
     // Either Low, Medium or High
 
 
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
+    public PriorityTypes getImportance() { return importance; }
+    public void setImportance(PriorityTypes importance) { this.importance = importance; }
 
-
-
-//    @ManyToMany
-//    @JoinTable(name = "resource_language", joinColumns = { @JoinColumn(name = "resource_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "language_id") })
-//    @Column(name = "language", nullable = true)
-//    @JsonIgnoreProperties({"projects", "resources"})
-//    private Set<Language> languages = new HashSet<>();
-
+    public Date getDeadline() { return deadline; }
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
 }
