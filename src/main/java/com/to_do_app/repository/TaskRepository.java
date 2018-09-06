@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.Set;
 
-@Repository
+@Repository // Attaches "findById" (a service) to the Task model.
 public interface TaskRepository extends CrudRepository<Task, Long> {
     Set<Task> findAll();
     Task findById(Integer id);
     void deleteById(Integer id);
-    Set<Task> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrImportanceContainingIgnoreCaseOrDeadlineContainingIgnoreCase(String name, String category, PriorityTypes importance, Date deadline);
+//    Set<Task> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrImportanceContainingIgnoreCaseOrDeadlineContainingIgnoreCase(String name, String category, PriorityTypes importance, Date deadline);
 }

@@ -6,7 +6,6 @@ import com.to_do_app.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import javax.transaction.Transactional;
 
 @RestController
@@ -21,27 +20,31 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
+//  API testing: prints variable passed into the url
     @GetMapping(path = "/{id}")
-    public @ResponseBody
-    Task getTaskById(@PathVariable(value = "id") Integer id) {
-        return taskService.getTaskById(id); //if statement to return message if the id doesn't exist.
+    public Integer nameOfFunction(@PathVariable(value = "id") Integer id) {
+        return id;
     }
 
-    // Post, not get, so this one's different
+//    @GetMapping(path = "/{id}")
+//    public @ResponseBody
+//    Task getTaskById(@PathVariable(value = "id") Integer id) {
+//        return taskService.getTaskById(id); //if statement to return message if the id doesn't exist.
+//    }
+//
+//    @PutMapping(path = "/{id}")
+//    public Task updateTask(@PathVariable(value = "id") Integer id, @RequestBody Task task) {
+//        task.setId(id);
+//        return taskService.addTask(task);
+//    }
+
+
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Task addTask(@RequestBody Task task) {
         return taskService.addTask(task); //if statement to return message if the id doesn't exist.
     }
 
-    // Put, not get
-    @PutMapping(path = "/{id}")
-    public Task updateTask(@PathVariable(value = "id") Integer id, @RequestBody Task task) {
-        task.setId(id);
-        return taskService.addTask(task);
-    }
-
-    // Delete, not get
     @Transactional
     @DeleteMapping(path = "/delete/{id}")
     public void deleteTaskById(@PathVariable(value = "id") Integer id){
@@ -56,9 +59,3 @@ public class TaskController {
 
 }
 
-//    teaching purposes: prints variable passed into the url
-//    @GetMapping(path = "/{id}")
-//    public String getResourceById(@PathVariable(value = "id") String id) {
-//        return id;
-//    }
-//}

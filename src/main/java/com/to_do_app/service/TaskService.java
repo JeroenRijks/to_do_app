@@ -15,15 +15,23 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Set<Task> getAllTasks() { return taskRepository.findAll(); }
-
-    public Task getTaskById(Integer id) { return taskRepository.findById(id); }
-
-    public Task addTask(Task task) { return taskRepository.save(task); }
-
-    public void deleteTaskById(Integer id) { taskRepository.deleteById(id); }
-
-    public Set<Task> getTasksBySearch(String name, String category, PriorityTypes importance, Date deadline){
-        return taskRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrImportanceContainingIgnoreCaseOrDeadlineContainingIgnoreCase(name, category, importance, deadline);
+    public Set<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
+
+    public Task getTaskById(Integer id) {
+        return taskRepository.findById(id);
+    }
+
+    public Task addTask(Task task) {
+        return taskRepository.save(task);
+    }
+
+    public void deleteTaskById(Integer id) {
+        taskRepository.deleteById(id);
+    }
+
+//    public Set<Task> getTasksBySearch(String name, String category, PriorityTypes importance, Date deadline){
+//        return taskRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrImportanceContainingIgnoreCaseOrDeadlineContainingIgnoreCase(name, category, importance, deadline);
+//    }
 }
