@@ -38,12 +38,6 @@ public class TaskController {
     }
 //    }
 
-////  API testing: prints variable passed into the url
-//    @GetMapping(path = "/{taskId}")
-//    public Long nameOfFunction(@PathVariable(value = "taskId") Long taskId) {
-//        return taskId;
-//    }
-
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Task addTask(@RequestBody Task task) {
