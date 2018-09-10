@@ -22,15 +22,15 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{categoryId}")
     public @ResponseBody
-    Category getCategoryById(@PathVariable(value = "id") Integer id){
-        return categoryService.getCategoryById(id);
+    Category getCategoryById(@PathVariable(value = "categoryId") Long categoryId){
+        return categoryService.getCategoryById(categoryId).get();
     }
 
-    @PutMapping(path = "/{id}")
-    public Category updateCategory(@PathVariable(value = "id") Integer id, @RequestBody Category category){
-        category.setId(id);
+    @PutMapping(path = "/{categoryId}")
+    public Category updateCategory(@PathVariable(value = "categoryId") Long categoryId, @RequestBody Category category){
+        category.setCategoryId(categoryId);
         return categoryService.addCategory(category);
     }
 
@@ -40,11 +40,11 @@ public class CategoryController {
         return categoryService.addCategory(category);
     }
 
-    @Transactional
-    @DeleteMapping(path = "/delete/{id}")
-    public void deleteCategoryById(@PathVariable(value = "id") Integer id){
-        categoryService.deleteCategoryById(id);
-    }
+//    @Transactional
+//    @DeleteMapping(path = "/delete/{categoryId}")
+//    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId){
+//        categoryService.deleteCategoryByCategoryId(categoryId);
+//    }
 
 
 }

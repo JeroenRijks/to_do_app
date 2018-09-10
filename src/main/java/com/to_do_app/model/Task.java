@@ -4,41 +4,45 @@ package com.to_do_app.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 
 @Entity
-@Table(name="tasks")
+@Table(name="task")
 public class Task {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @Column(name = "task_id")
+    private Long taskId;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "task_name", nullable = false)
     private String name;
 
-    @Column(name = "category", nullable = false)
-    private String category;
-    // FK -> PK
+    @ManyToOne()
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(name = "importance", nullable = false)
     private PriorityTypes importance;
 
     @Column(name = "date")
-    private Date deadline;      // dd/mm/yy format
+    private Date deadline;
     // Either Low, Medium or High
 
+    // Getters & Setters
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return taskId; }
+    public void setId(Long taskId) { this.taskId = taskId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+//    public List<>
 
     public PriorityTypes getImportance() { return importance; }
     public void setImportance(PriorityTypes importance) { this.importance = importance; }

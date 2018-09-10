@@ -6,6 +6,7 @@ import com.to_do_app.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -17,16 +18,16 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category getCategoryById(Integer id){
-        return categoryRepository.findById(id);
+    public Optional<Category> getCategoryById(Long categoryId){
+        return categoryRepository.findById(categoryId);
     }
 
     public Category addCategory(Category category) {
         return categoryRepository.save(category);
     }
 
-    public void deleteCategoryById(Integer id){
-        categoryRepository.deleteById(id);
+    public void deleteCategoryById(Long categoryId){
+        categoryRepository.deleteById(categoryId);
     }
 
 }

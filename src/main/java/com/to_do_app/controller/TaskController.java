@@ -19,36 +19,41 @@ public class TaskController {
     Iterable<Task> getAllTasks() {
         return taskService.getAllTasks();
     }
-
-//  API testing: prints variable passed into the url
-    @GetMapping(path = "/{id}")
-    public Integer nameOfFunction(@PathVariable(value = "id") Integer id) {
-        return id;
-    }
-
-//    @GetMapping(path = "/{id}")
-//    public @ResponseBody
-//    Task getTaskById(@PathVariable(value = "id") Integer id) {
-//        return taskService.getTaskById(id); //if statement to return message if the id doesn't exist.
-//    }
 //
-//    @PutMapping(path = "/{id}")
-//    public Task updateTask(@PathVariable(value = "id") Integer id, @RequestBody Task task) {
-//        task.setId(id);
+//    @PutMapping(path = "/{taskId}")
+//    public Task updateTask(@PathVariable(value = "taskId") Long taskId, @RequestBody Task task) {
+//        task.setId(taskId);
 //        return taskService.addTask(task);
+
+    @GetMapping(path = "/{taskId}")
+    @ResponseBody
+    public Task getTaskById(@PathVariable(value = "taskId") Long taskId) {
+
+        Task a = taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
+        System.out.println("lil break");
+
+        return a;
+
+//        return taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
+    }
 //    }
 
+////  API testing: prints variable passed into the url
+//    @GetMapping(path = "/{taskId}")
+//    public Long nameOfFunction(@PathVariable(value = "taskId") Long taskId) {
+//        return taskId;
+//    }
 
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Task addTask(@RequestBody Task task) {
-        return taskService.addTask(task); //if statement to return message if the id doesn't exist.
+        return taskService.addTask(task); //if statement to return message if the taskId doesn't exist.
     }
 
     @Transactional
-    @DeleteMapping(path = "/delete/{id}")
-    public void deleteTaskById(@PathVariable(value = "id") Integer id){
-        taskService.deleteTaskById(id);
+    @DeleteMapping(path = "/delete/{taskId}")
+    public void deleteTaskById(@PathVariable(value = "taskId") Long taskId){
+        taskService.deleteTaskById(taskId);
     }
 
 //    How to search for different data types? input is string, so I have to switch deadline/importance to string equivalents

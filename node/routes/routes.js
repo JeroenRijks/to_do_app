@@ -1,10 +1,9 @@
 var appRouter = function (app) {
+
     app.get("/", function(req, res) {
 
-
     var Request = require("request");
-
-    Request.get("http://localhost:8000/api/resource/", (error, response, body) => {
+    Request.get("http://localhost:8080/api/task/1", (error, response, body) => {
         if(error) {
             return console.dir(error);
         }
@@ -12,8 +11,8 @@ var appRouter = function (app) {
         console.dir(JSON.parse(body));
     });
 
-//        res.status(200).send("Welcome to our restful API");
     });
+
 }
 
 

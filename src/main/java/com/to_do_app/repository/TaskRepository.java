@@ -11,7 +11,7 @@ import java.util.Set;
 @Repository // Attaches "findById" (a service) to the Task model.
 public interface TaskRepository extends CrudRepository<Task, Long> {
     Set<Task> findAll();
-    Task findById(Integer id);
-    void deleteById(Integer id);
+
+    void deleteById(Long taskId);
 //    Set<Task> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrImportanceContainingIgnoreCaseOrDeadlineContainingIgnoreCase(String name, String category, PriorityTypes importance, Date deadline);
 }

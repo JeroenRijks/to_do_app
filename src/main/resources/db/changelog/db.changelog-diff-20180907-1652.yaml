@@ -1,12 +1,12 @@
 databaseChangeLog:
 - changeSet:
-    id: 1536071405532-1
+    id: 1536335575798-1
     author: jeroen (generated)
     changes:
     - createSequence:
         sequenceName: hibernate_sequence
 - changeSet:
-    id: 1536071405532-2
+    id: 1536335575798-2
     author: jeroen (generated)
     changes:
     - createTable:
@@ -15,22 +15,17 @@ databaseChangeLog:
             autoIncrement: true
             constraints:
               primaryKey: true
-              primaryKeyName: categoriesPK
-            name: id
-            type: INT
+              primaryKeyName: categoryPK
+            name: categoryId
+            type: BIGINT
         - column:
             constraints:
               nullable: false
             name: name
             type: VARCHAR(255)
-        - column:
-            constraints:
-              nullable: false
-            name: category_id
-            type: INT
-        tableName: categories
+        tableName: category
 - changeSet:
-    id: 1536071405532-3
+    id: 1536335575798-3
     author: jeroen (generated)
     changes:
     - createTable:
@@ -39,14 +34,9 @@ databaseChangeLog:
             autoIncrement: true
             constraints:
               primaryKey: true
-              primaryKeyName: tasksPK
-            name: id
-            type: INT
-        - column:
-            constraints:
-              nullable: false
-            name: category
-            type: VARCHAR(255)
+              primaryKeyName: taskPK
+            name: taskId
+            type: BIGINT
         - column:
             name: date
             type: TIMESTAMP WITHOUT TIME ZONE
@@ -60,17 +50,20 @@ databaseChangeLog:
               nullable: false
             name: name
             type: VARCHAR(255)
-        tableName: tasks
+        - column:
+            name: categoryId
+            type: BIGINT
+        tableName: task
 - changeSet:
-    id: 1536071405532-4
+    id: 1536335575798-4
     author: jeroen (generated)
     changes:
     - addForeignKeyConstraint:
-        baseColumnNames: category_id
-        baseTableName: categories
-        constraintName: FKeqmudnnyfxr9lyqathpu9eie3
+        baseColumnNames: categoryId
+        baseTableName: task
+        constraintName: FKejkhhtgidcb9xbvktx9g4xfe9
         deferrable: false
         initiallyDeferred: false
-        referencedColumnNames: id
-        referencedTableName: tasks
+        referencedColumnNames: categoryId
+        referencedTableName: category
 
