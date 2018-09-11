@@ -30,7 +30,7 @@ public class Task {
     @Column(name = "importance", nullable = false)
     private PriorityTypes importance;
 
-    @Column(name = "date")
+    @Column(name = "deadline")
     private Date deadline;
     // Either Low, Medium or High
 

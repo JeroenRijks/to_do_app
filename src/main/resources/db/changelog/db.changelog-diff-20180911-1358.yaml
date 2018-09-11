@@ -1,0 +1,19 @@
+databaseChangeLog:
+- changeSet:
+    id: 1536670732762-1
+    author: jeroen (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: deadline
+            type: timestamp
+        tableName: task
+- changeSet:
+    id: 1536670732762-2
+    author: jeroen (generated)
+    changes:
+    - dropColumn:
+        columnName: date
+        tableName: task
+
