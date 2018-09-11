@@ -22,7 +22,7 @@ public class CategoryService {
         return categoryRepository.findById(categoryId);
     }
 
-    public Category addCategory(Category category) {
+    public Category saveCategory(Category category) {
         return categoryRepository.save(category);
     }
 

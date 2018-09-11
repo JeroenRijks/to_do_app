@@ -38,7 +38,7 @@ var appRouter = function (app) {
     });
 
 //  Untested deletebyid method
-    app.post('/java/api/task/delete/:taskId', function(req, res) {
+    app.delete('/java/api/task/delete/:taskId', function(req, res) {
         Request.post("http://localhost:8000/api/task/add/", (error, response, body) => {
 //          Value for task_id is in body, so it's being sent through to java.
 //            var task_id = req.body.task_id;
@@ -68,14 +68,47 @@ var appRouter = function (app) {
     });
 
     app.put("/java/category/:categoryId", function(req, res) {
-        Request.get("http://localhost:8080/api/category/" + req.params.categoryId, (error, response, body) => {
-            // category id is in req.body.category_id
-            if(error) {
-                return console.dir(error);
-            }
-            res.status(200).send(body);
-//            console.dir(JSON.parse(body));
-        });
+
+//        request({
+//                    uri: 'http://localhost:8080/api/category/' + req.params.categoryId,
+//                    method: 'PUT',
+//                    data: [{
+//                            'content-type': 'application/json',
+//                            body: JSON.stringify(req.body)
+//                    }],
+//                    json: true
+//            });
+
+//        Request.get("http://localhost:8080/api/category/" + req.params.categoryId, (error, response, body) => {
+            Request({
+              method: 'PUT',
+              url: 'http://localhost:8080/api/category/' + req.params.categoryId,
+              body: req.body,
+              json: true,
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }, (error, response, body) => {
+                res.send(req.body);
+            });
+
+
+//            var name = req.body.name
+//            var categoryId = req.params.categoryId
+//            var task = req.body.task
+
+//            res.send(req.body);
+
+            //  Loads of print messages
+            console.dir("****START****");
+            console.dir("********This is the request body********");
+//            console.dir(req.body);
+            console.dir("********This is the body********");
+            console.dir(req.body);
+            console.dir("********This is the response body********");
+            console.dir(res.body);
+            console.dir("****END****");
+//        });
     });
 
     app.post("/java/category/add", function(req, res) {

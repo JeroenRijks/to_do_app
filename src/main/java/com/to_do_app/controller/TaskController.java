@@ -19,7 +19,7 @@ public class TaskController {
     Iterable<Task> getAllTasks() {
         return taskService.getAllTasks();
     }
-//
+
 //    @PutMapping(path = "/{taskId}")
 //    public Task updateTask(@PathVariable(value = "taskId") Long taskId, @RequestBody Task task) {
 //        task.setId(taskId);
@@ -29,14 +29,10 @@ public class TaskController {
     @ResponseBody
     public Task getTaskById(@PathVariable(value = "taskId") Long taskId) {
 
-        Task a = taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
-        System.out.println("lil break");
-
-        return a;
+        return taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
 
 //        return taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
     }
-//    }
 
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)
