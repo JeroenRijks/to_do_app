@@ -24,12 +24,11 @@ public class TaskService {
     }
 
     public Optional<Task> getTaskById(Long taskId) {
-        System.out.println("In taskservice");
         Optional<Task> b = taskRepository.findById(taskId);
         return b;
     }
 
-    public Task addTask(Task task) {
+    public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
 

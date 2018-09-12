@@ -48,11 +48,11 @@ public class CategoryController {
         return categoryService.saveCategory(category);
     }
 
-//    @Transactional
-//    @DeleteMapping(path = "/delete/{categoryId}")
-//    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId){
-//        categoryService.deleteCategoryByCategoryId(categoryId);
-//    }
+    @DeleteMapping(path = "/{categoryId}")
+    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId){
+        System.out.println("Delete called in controller");
+        categoryService.deleteCategoryByCategoryId(categoryId);
+    }
 
 
 }

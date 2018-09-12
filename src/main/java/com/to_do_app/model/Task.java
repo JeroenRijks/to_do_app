@@ -23,6 +23,7 @@ public class Task {
     @Column(name = "task_name", nullable = false)
     private String name;
 
+    // JJJ TODO: Not showing up in json files
     @ManyToOne()
     @JoinColumn(name = "category_id")
     private Category category;
@@ -36,8 +37,8 @@ public class Task {
 
     // Getters & Setters
 
-    public Long getId() { return taskId; }
-    public void setId(Long taskId) { this.taskId = taskId; }
+    public Long getTaskId() { return taskId; }
+    public void setTaskId(Long taskId) { this.taskId = taskId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
