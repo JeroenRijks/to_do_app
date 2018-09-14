@@ -30,7 +30,6 @@ public class TaskController {
     public Task getTaskById(@PathVariable(value = "taskId") Long taskId) {
 
         Task a = taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
-        System.out.println("lil break");
 
         return a;
 

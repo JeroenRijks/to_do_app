@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cucumber": "^5.0.0",
     "express": "^4.16.3",
+    "junit": "^1.4.9",
     "request": "^2.88.0"
   },
   "devDependencies": {},
