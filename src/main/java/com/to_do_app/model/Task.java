@@ -43,7 +43,12 @@ public class Task {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-//    public List<>
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public PriorityTypes getImportance() { return importance; }
     public void setImportance(PriorityTypes importance) { this.importance = importance; }

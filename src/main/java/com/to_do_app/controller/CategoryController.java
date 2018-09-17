@@ -40,11 +40,12 @@ public class CategoryController {
         return categoryService.addCategory(category);
     }
 
-//    @Transactional
-//    @DeleteMapping(path = "/delete/{categoryId}")
-//    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId){
-//        categoryService.deleteCategoryByCategoryId(categoryId);
-//    }
-
+    @Transactional // Do I need this?
+    @DeleteMapping(path = "/delete/{categoryId}")
+    // Used to be public void, but removed void because test can't return anything from a void
+    public void deleteCategoryByCategoryId(@PathVariable(value = "categoryId") Long categoryId){
+        categoryService.deleteCategoryByCategoryId(categoryId);
+    // TODO: JJJ JEROEN Return deleted httpstatus stuff like Jack did.
+    }
 
 }
