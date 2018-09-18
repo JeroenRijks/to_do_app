@@ -1,6 +1,7 @@
 package com.to_do_app.controller;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.to_do_app.model.Category;
 import com.to_do_app.model.PriorityTypes;
@@ -21,15 +22,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import cucumber.steps.JsonUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -60,7 +60,7 @@ public class CategoryControllerTest {
     private Task testTask;
 
     @Before
-    public void setup(){
+    public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
 
         testTask = new Task();
@@ -78,25 +78,31 @@ public class CategoryControllerTest {
         testCategory2.setCategoryId(2L);
         testCategory2.setName("testCategory2");
 
-        testCategories = Arrays.asList(testCategory, testCategory2);
+
+        Set testCategories = new HashSet();
+        testCategories.add(testCategory2);
+        testCategories.add(testCategory);
         given(categoryService.getAllCategories()).willReturn(testCategories);
         given(categoryService.getCategoryById(anyLong())).willReturn(Optional.of(testCategory));
         given(categoryService.addCategory(any(Category.class))).willReturn(testCategory);
-        given(categoryService.deleteCategoryByCategoryId(anyLong())).willReturn(Optional.of(testCategory));
+//        given(categoryService.deleteCategoryByCategoryId(anyLong())).willReturn(Optional.of(testCategory));
         // TODO: Go through controller and service void stuff, return httpstatus
         // More givens here
     }
 
     @Test
-    public void testGetAllCategoriesReturns200Response() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                .get(endpoint + "/all"))
+    public void testGetAllCategoriesReturns200Response() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get(endpoint + "/all"))
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
         String foundCategory = mvcResult.getResponse().getContentAsString();
-        Category retrievedCategory = JsonUtil.toObjectFromJson(foundCategory, Category.class);
-        assertEquals("testCategory",retrievedCategory.getName());
-
+        List<Category> actualCategories = MAPPER.readValue(foundCategory, MAPPER.getTypeFactory().constructCollectionType(List.class, Category.class));
+        Category actualCategory1 = actualCategories.get(0);
+        Category actualCategory2 = actualCategories.get(1);
+        assertEquals("testCategory", actualCategory1.getName());
+        assertEquals((Long) 1L, actualCategory1.getCategoryId());
+        assertEquals("testCategory2", actualCategory2.getName());
+        assertEquals((Long) 2L, actualCategory2.getCategoryId());
     }
 
 

@@ -24,7 +24,6 @@ public class TaskService {
     }
 
     public Optional<Task> getTaskById(Long taskId) {
-        System.out.println("In taskservice");
         Optional<Task> b = taskRepository.findById(taskId);
         return b;
     }

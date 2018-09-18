@@ -29,13 +29,8 @@ public class TaskController {
     @ResponseBody
     public Task getTaskById(@PathVariable(value = "taskId") Long taskId) {
 
-        Task a = taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
-
-        return a;
-
-//        return taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
+        return taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
     }
-//    }
 
     @PostMapping(path = "/add")
     @ResponseStatus(HttpStatus.CREATED)

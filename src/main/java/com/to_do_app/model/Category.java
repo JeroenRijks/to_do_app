@@ -1,13 +1,16 @@
 package com.to_do_app.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements Serializable {
     @Column(name = "category_name", nullable = false)
     private String name;
 
@@ -18,6 +21,7 @@ public class Category {
     private Long categoryId;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Task> task;
 

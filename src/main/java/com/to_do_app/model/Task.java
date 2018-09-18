@@ -24,7 +24,7 @@ public class Task {
     @Column(name = "task_name", nullable = false)
     private String name;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
