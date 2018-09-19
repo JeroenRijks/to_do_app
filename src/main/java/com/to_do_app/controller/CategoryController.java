@@ -2,13 +2,15 @@ package com.to_do_app.controller;
 
 
 import com.to_do_app.model.Category;
-import com.to_do_app.model.Task;
 import com.to_do_app.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/api/category")
@@ -16,36 +18,64 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping(path = "/all")
-    public @ResponseBody
-    Iterable<Category> getAllCategories(){
-        return categoryService.getAllCategories();
+    @GetMapping(path = "/")
+    public ResponseEntity getAllCategories(){
+        Set<Category> fetchedCategories = categoryService.getAllCategories();
+        if(fetchedCategories.isEmpty()){
+            return new ResponseEntity<>(new Message("The category list is empty"),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(fetchedCategories,HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/{categoryId}")
-    public @ResponseBody
-    Category getCategoryById(@PathVariable(value = "categoryId") Long categoryId){
-        return categoryService.getCategoryById(categoryId).get();
-    }
+    public ResponseEntity getCategoryById(@PathVariable(value = "categoryId") Long categoryId){
+        Optional<Category> fetchedCategory;
+        fetchedCategory = categoryService.getCategoryById(categoryId);
+        if (!fetchedCategory.isPresent()){
+            return new ResponseEntity<>(new Message("This category does not exist"),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(fetchedCategory.get(),HttpStatus.ACCEPTED);    }
 
     @PutMapping(path = "/{categoryId}")
-    public Category updateCategory(@PathVariable(value = "categoryId") Long categoryId, @RequestBody Category category){
-        category.setCategoryId(categoryId);
-        return categoryService.addCategory(category);
+    public ResponseEntity updateCategory(@PathVariable(value = "categoryId") Long categoryId, @RequestBody Category reqCategory){
+        Optional<Category> fetchedCategory;
+        fetchedCategory = categoryService.getCategoryById(categoryId); // This could depend on the id value given
+        if (!fetchedCategory.isPresent()){
+            return new ResponseEntity(new Message("Cannot update this category, it doesn't exist."),HttpStatus.NOT_FOUND);
+        }
+        Category newCategory = fetchedCategory.get();
+
+        // Only update the fields that have new info.
+        if(reqCategory.getName() != null) {
+            newCategory.setName(reqCategory.getName());
+        }
+        if(reqCategory.getTask() != null) {
+            newCategory.setTask(reqCategory.getTask());
+        }
+        categoryService.saveCategory(newCategory);
+        return new ResponseEntity(newCategory,HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(path = "/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Category addCategory(@RequestBody Category category){
-        return categoryService.addCategory(category);
+    @PostMapping(path = "/")
+    public ResponseEntity postCategory(@RequestBody Category reqCategory){
+        Category newCategory = new Category();
+        newCategory.setName(reqCategory.getName());
+        newCategory.setTask(reqCategory.getTask());
+        categoryService.saveCategory(newCategory);
+        return new ResponseEntity(newCategory,HttpStatus.CREATED);
+
     }
 
     @Transactional // Do I need this?
-    @DeleteMapping(path = "/delete/{categoryId}")
-    // Used to be public void, but removed void because test can't return anything from a void
-    public void deleteCategoryByCategoryId(@PathVariable(value = "categoryId") Long categoryId){
+    @DeleteMapping(path = "/{categoryId}")
+    public ResponseEntity deleteCategoryByCategoryId(@PathVariable(value = "categoryId") Long categoryId){
+        Optional<Category> fetchedCategory;
+        fetchedCategory = categoryService.getCategoryById(categoryId);
+        if(!fetchedCategory.isPresent()){
+            return new ResponseEntity(new Message("Cannot delete this category, it doesn't exist"),HttpStatus.NOT_FOUND);
+        }
         categoryService.deleteCategoryByCategoryId(categoryId);
-    // TODO: JJJ JEROEN Return deleted httpstatus stuff like Jack did.
+        return new ResponseEntity(fetchedCategory,HttpStatus.ACCEPTED);
     }
 
 }
