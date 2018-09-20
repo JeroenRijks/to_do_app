@@ -1,12 +1,17 @@
 package com.to_do_app.controller;
 
 
+import com.to_do_app.model.Category;
 import com.to_do_app.model.Task;
 import com.to_do_app.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
+import javax.xml.ws.Response;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path="/api/task")   // the base url for tasks
@@ -14,41 +19,80 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping(path = "/all")
-    public @ResponseBody
-    Iterable<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    @GetMapping(path = "/")
+    public ResponseEntity getAllTasks(){
+    Set<Task> fetchedTasks = taskService.getAllTasks();
+    if(fetchedTasks.isEmpty()){
+        return new ResponseEntity<>(new Message("The task list is empty."),HttpStatus.NOT_FOUND);
     }
-//
-//    @PutMapping(path = "/{taskId}")
-//    public Task updateTask(@PathVariable(value = "taskId") Long taskId, @RequestBody Task task) {
-//        task.setId(taskId);
-//        return taskService.addTask(task);
+    return new ResponseEntity(fetchedTasks,HttpStatus.ACCEPTED);
+    }
+
+// WAS COMMENTED OUT.
+    @PutMapping(path = "/{taskId}")
+    public ResponseEntity updateTask(@PathVariable(value = "taskId") Long taskId, @RequestBody Task reqTask) {
+        Optional<Task> fetchedTask;
+        fetchedTask = taskService.getTaskById(taskId);
+        if (!fetchedTask.isPresent()){
+            return new ResponseEntity(new Message("Cannot delete this category because it doesn't exist."),HttpStatus.NOT_FOUND);
+        }
+        Task newTask = fetchedTask.get();
+
+        // Only update the fields that have new info.
+        if(reqTask.getName() != null) {
+            newTask.setName(reqTask.getName());
+        }
+        if(reqTask.getCategory() != null) {
+            newTask.setCategory(reqTask.getCategory());
+        }
+        if(reqTask.getDeadline() != null) {
+            newTask.setDeadline(reqTask.getDeadline());
+        }
+        if(reqTask.getImportance() != null) {
+            newTask.setImportance(reqTask.getImportance());
+        }
+        taskService.saveTask(newTask);
+        return new ResponseEntity(newTask,HttpStatus.ACCEPTED);
+    }
+
+
+
+
+
 
     @GetMapping(path = "/{taskId}")
-    @ResponseBody
-    public Task getTaskById(@PathVariable(value = "taskId") Long taskId) {
-
-        return taskService.getTaskById(taskId).get(); //if statement to return message if the taskId doesn't exist.
+    public ResponseEntity getTaskById(@PathVariable(value = "taskId") Long taskId) {
+        Optional<Task> fetchedTask;
+        fetchedTask = taskService.getTaskById(taskId);
+        if (!fetchedTask.isPresent()){
+            return new ResponseEntity(new Message("This task does not exist."),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(fetchedTask.get(),HttpStatus.ACCEPTED); //if statement to return message if the taskId doesn't exist.
     }
 
     @PostMapping(path = "/add")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Task addTask(@RequestBody Task task) {
-        return taskService.addTask(task); //if statement to return message if the taskId doesn't exist.
+//    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity addTask(@RequestBody Task reqTask) {
+        Task newTask = new Task();
+        newTask.setName(reqTask.getName());
+        newTask.setCategory(reqTask.getCategory());
+        newTask.setImportance(reqTask.getImportance());
+        newTask.setDeadline(reqTask.getDeadline());
+        taskService.saveTask(newTask);
+        return new ResponseEntity(newTask, HttpStatus.CREATED);
     }
 
     @Transactional
     @DeleteMapping(path = "/delete/{taskId}")
-    public void deleteTaskById(@PathVariable(value = "taskId") Long taskId){
+    public ResponseEntity deleteTaskById(@PathVariable(value = "taskId") Long taskId){
+        Optional<Task> fetchedTask;
+        fetchedTask = taskService.getTaskById(taskId);
+        if(!fetchedTask.isPresent()){
+            return new ResponseEntity(new Message("Cannot delete this category because it doesn't exist."),HttpStatus.NOT_FOUND);
+        }
         taskService.deleteTaskById(taskId);
+        return new ResponseEntity(fetchedTask,HttpStatus.ACCEPTED);
     }
-
-//    How to search for different data types? input is string, so I have to switch deadline/importance to string equivalents
-//    @GetMapping(path="/search/{search}")
-//    public @ResponseBody Iterable<Task> getTasksBySearch(@PathVariable(value = "search") String search){
-//        return taskService.getTasksBySearch(search, search, search, search);
-//    }
 
 }
 

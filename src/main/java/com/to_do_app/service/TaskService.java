@@ -28,7 +28,8 @@ public class TaskService {
         return b;
     }
 
-    public Task addTask(Task task) {
+
+    public Task saveTask(Task task) {
         return taskRepository.save(task);
     }
 

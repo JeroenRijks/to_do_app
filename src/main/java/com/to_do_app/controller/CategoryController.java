@@ -72,7 +72,7 @@ public class CategoryController {
         Optional<Category> fetchedCategory;
         fetchedCategory = categoryService.getCategoryById(categoryId);
         if(!fetchedCategory.isPresent()){
-            return new ResponseEntity(new Message("Cannot delete this category, it doesn't exist"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Message("Cannot delete this category because it doesn't exist."),HttpStatus.NOT_FOUND);
         }
         categoryService.deleteCategoryByCategoryId(categoryId);
         return new ResponseEntity(fetchedCategory,HttpStatus.ACCEPTED);
