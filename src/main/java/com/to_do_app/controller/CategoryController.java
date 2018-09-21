@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,11 +20,19 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+//    @GetMapping(path = "/")
+//    public ResponseEntity getAllCategories(){
+//        List<Category> fetchedCategories = categoryService.getAllCategories();
+//        if(fetchedCategories.isEmpty()){
+//            return new ResponseEntity<>(new Message("The category list is empty."),HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity(fetchedCategories,HttpStatus.ACCEPTED);
+//    }
     @GetMapping(path = "/")
     public ResponseEntity getAllCategories(){
-        Set<Category> fetchedCategories = categoryService.getAllCategories();
+        List<Category> fetchedCategories = categoryService.getAllCategories();
         if(fetchedCategories.isEmpty()){
-            return new ResponseEntity<>(new Message("The category list is empty"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message("The category list is empty."),HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity(fetchedCategories,HttpStatus.ACCEPTED);
     }
@@ -32,7 +42,7 @@ public class CategoryController {
         Optional<Category> fetchedCategory;
         fetchedCategory = categoryService.getCategoryById(categoryId);
         if (!fetchedCategory.isPresent()){
-            return new ResponseEntity<>(new Message("This category does not exist"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Message("Cannot get this category because it does not exist."),HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(fetchedCategory.get(),HttpStatus.ACCEPTED);    }
 
@@ -41,7 +51,7 @@ public class CategoryController {
         Optional<Category> fetchedCategory;
         fetchedCategory = categoryService.getCategoryById(categoryId); // This could depend on the id value given
         if (!fetchedCategory.isPresent()){
-            return new ResponseEntity(new Message("Cannot update this category, it doesn't exist."),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Message("Cannot edit this category because it does not exist."),HttpStatus.NOT_FOUND);
         }
         Category newCategory = fetchedCategory.get();
 
@@ -72,7 +82,7 @@ public class CategoryController {
         Optional<Category> fetchedCategory;
         fetchedCategory = categoryService.getCategoryById(categoryId);
         if(!fetchedCategory.isPresent()){
-            return new ResponseEntity(new Message("Cannot delete this category because it doesn't exist."),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Message("Cannot delete this category because it does not exist."),HttpStatus.NOT_FOUND);
         }
         categoryService.deleteCategoryByCategoryId(categoryId);
         return new ResponseEntity(fetchedCategory,HttpStatus.ACCEPTED);

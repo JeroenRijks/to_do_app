@@ -28,13 +28,23 @@ public class TaskController {
     return new ResponseEntity(fetchedTasks,HttpStatus.ACCEPTED);
     }
 
-// WAS COMMENTED OUT.
+    @GetMapping(path = "/{taskId}")
+    public ResponseEntity getTaskById(@PathVariable(value = "taskId") Long taskId) {
+        Optional<Task> fetchedTask;
+        fetchedTask = taskService.getTaskById(taskId);
+        if (!fetchedTask.isPresent()){
+            return new ResponseEntity(new Message("Cannot get this task because it does not exist."),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(fetchedTask.get(),HttpStatus.ACCEPTED); //if statement to return message if the taskId doesn't exist.
+    }
+
+    // WAS COMMENTED OUT.
     @PutMapping(path = "/{taskId}")
     public ResponseEntity updateTask(@PathVariable(value = "taskId") Long taskId, @RequestBody Task reqTask) {
         Optional<Task> fetchedTask;
         fetchedTask = taskService.getTaskById(taskId);
         if (!fetchedTask.isPresent()){
-            return new ResponseEntity(new Message("Cannot delete this category because it doesn't exist."),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Message("Cannot edit this task because it doesn't exist."),HttpStatus.NOT_FOUND);
         }
         Task newTask = fetchedTask.get();
 
@@ -55,22 +65,7 @@ public class TaskController {
         return new ResponseEntity(newTask,HttpStatus.ACCEPTED);
     }
 
-
-
-
-
-
-    @GetMapping(path = "/{taskId}")
-    public ResponseEntity getTaskById(@PathVariable(value = "taskId") Long taskId) {
-        Optional<Task> fetchedTask;
-        fetchedTask = taskService.getTaskById(taskId);
-        if (!fetchedTask.isPresent()){
-            return new ResponseEntity(new Message("This task does not exist."),HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity(fetchedTask.get(),HttpStatus.ACCEPTED); //if statement to return message if the taskId doesn't exist.
-    }
-
-    @PostMapping(path = "/add")
+    @PostMapping(path = "/")
 //    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity addTask(@RequestBody Task reqTask) {
         Task newTask = new Task();
@@ -83,12 +78,12 @@ public class TaskController {
     }
 
     @Transactional
-    @DeleteMapping(path = "/delete/{taskId}")
+    @DeleteMapping(path = "/{taskId}")
     public ResponseEntity deleteTaskById(@PathVariable(value = "taskId") Long taskId){
         Optional<Task> fetchedTask;
         fetchedTask = taskService.getTaskById(taskId);
         if(!fetchedTask.isPresent()){
-            return new ResponseEntity(new Message("Cannot delete this category because it doesn't exist."),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Message("Cannot delete this task because it does not exist."),HttpStatus.NOT_FOUND);
         }
         taskService.deleteTaskById(taskId);
         return new ResponseEntity(fetchedTask,HttpStatus.ACCEPTED);

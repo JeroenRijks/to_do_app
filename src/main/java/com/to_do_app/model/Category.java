@@ -21,7 +21,7 @@ public class Category implements Serializable {
     private Long categoryId;
 
 
-    @JsonIgnore
+    @JsonIgnore // Prevents infinite recursion between calling categories and tasks
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Task> task;
 

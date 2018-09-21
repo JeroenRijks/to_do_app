@@ -10,11 +10,20 @@ buildscript {
 	}
 }
 
+plugins {
+	id 'application'
+	id 'io.spring.dependency-management' version '1.0.4.RELEASE'
+	id 'org.springframework.boot' version '2.0.1.RELEASE'
+	id 'org.sonarqube' version '2.6.2'
+	id 'jacoco'
+}
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply from: 'liquibase.gradle'
+
+
 
 group = 'com.to_do_app'
 version = '0.0.1-SNAPSHOT'
@@ -51,5 +60,33 @@ bootJar {
     destinationDir = file("$rootDir/build/libs")
     manifest {
         attributes 'Implementation-Title': project.name, 'Implementation-Version': project.version
-    }
+	}
+}
+
+jacoco {
+	toolVersion = '0.7.9' // jacocoMavenPluginVersion
+	reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+	executionData(test)
+
+	reports {
+		xml.enabled = true
+		csv.enabled = true
+	}
+
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: coverageExclusionList)
+		})
+	}
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectName", "${rootProject.name}"
+		property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+		property "sonar.exclusions", coverageExclusionList.join(", ")
+	}
 }
