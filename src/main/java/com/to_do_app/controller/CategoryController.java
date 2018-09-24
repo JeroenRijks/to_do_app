@@ -66,14 +66,20 @@ public class CategoryController {
         return new ResponseEntity(newCategory,HttpStatus.ACCEPTED);
     }
 
+//    @PostMapping(path = "/")
+//    public ResponseEntity postCategory(@RequestBody Category reqCategory){
+//        Category newCategory = new Category();
+//        newCategory.setName(reqCategory.getName());
+//        newCategory.setTask(reqCategory.getTask());
+//        categoryService.saveCategory(newCategory);
+//        return new ResponseEntity(newCategory,HttpStatus.CREATED);
+//
+//    }
     @PostMapping(path = "/")
     public ResponseEntity postCategory(@RequestBody Category reqCategory){
-        Category newCategory = new Category();
-        newCategory.setName(reqCategory.getName());
-        newCategory.setTask(reqCategory.getTask());
-        categoryService.saveCategory(newCategory);
-        return new ResponseEntity(newCategory,HttpStatus.CREATED);
-
+        System.out.println("JJJ - In Controller, reqCategory is" + reqCategory);
+        categoryService.saveCategory(reqCategory);
+        return new ResponseEntity(reqCategory,HttpStatus.CREATED);
     }
 
     @Transactional // Do I need this?
