@@ -55,8 +55,9 @@ public class CategoryControllerTest {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private List<Category> testCategories = new ArrayList<>();
+//    private List<Category> testCategories;
 
-    private Category testCategory;
+    private Category testCategory1;
 
     private Category testCategory2;
 
@@ -73,12 +74,12 @@ public class CategoryControllerTest {
         testTask.setId(1L);  // The L is for the long data type
         testTask.setName("testTask");
         testTask.setImportance(PriorityTypes.LOW);
-        testTask.setCategory(testCategory);
+        testTask.setCategory(testCategory1);
 //        testTask.setDeadline(07/10/1996);  // Date class is deprecated
 
-        testCategory = new Category();
-        testCategory.setCategoryId(1L);
-        testCategory.setName("testCategory");
+        testCategory1 = new Category();
+        testCategory1.setCategoryId(1L);
+        testCategory1.setName("testCategory1");
 
         testCategory2 = new Category();
         testCategory2.setCategoryId(2L);
@@ -89,13 +90,13 @@ public class CategoryControllerTest {
         testCategoryInputData.setName("inputDataName");
 
         List testCategories = new ArrayList();
-        testCategories.add(testCategory);
+        testCategories.add(testCategory1);
         testCategories.add(testCategory2);
 
         given(categoryServiceMock.getAllCategories()).willReturn(testCategories);
-        given(categoryServiceMock.getCategoryById(anyLong())).willReturn(Optional.of(testCategory));
-        given(categoryServiceMock.saveCategory(any(Category.class))).willReturn(testCategory);
-//        given(categoryServiceMock.deleteCategoryByCategoryId(anyLong())).willReturn(Optional.of(testCategory));
+        given(categoryServiceMock.getCategoryById(anyLong())).willReturn(Optional.of(testCategory1));
+        given(categoryServiceMock.saveCategory(any(Category.class))).willReturn(testCategory1);
+//        given(categoryServiceMock.deleteCategoryByCategoryId(anyLong())).willReturn(Optional.of(testCategory1));
         // TODO: Go through controller and service void stuff, return httpstatus
         // More givens here
     }
@@ -110,7 +111,7 @@ public class CategoryControllerTest {
         List<Category> actualCategories = MAPPER.readValue(foundCategory, MAPPER.getTypeFactory().constructCollectionType(List.class, Category.class));
         Category actualCategory1 = actualCategories.get(0);
         Category actualCategory2 = actualCategories.get(1);
-        assertEquals("testCategory", actualCategory1.getName());
+        assertEquals("testCategory1", actualCategory1.getName());
         assertEquals((Long) 1L, actualCategory1.getCategoryId());
         assertEquals("testCategory2", actualCategory2.getName());
         assertEquals((Long) 2L, actualCategory2.getCategoryId());
@@ -126,7 +127,7 @@ public class CategoryControllerTest {
         String foundCategory = mvcResult.getResponse().getContentAsString();
         Category actualCategory1 = MAPPER.readValue(foundCategory, Category.class);
         assertEquals((Long) 1L, actualCategory1.getCategoryId());
-        assertEquals( "testCategory", actualCategory1.getName());
+        assertEquals( "testCategory1", actualCategory1.getName());
         verify(categoryServiceMock, times(1)).getCategoryById(1L);
         verifyNoMoreInteractions(categoryServiceMock);
     }
@@ -191,7 +192,7 @@ public class CategoryControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
         Category objectFromController = MAPPER.readValue(mvcResult.getResponse().getContentAsString(), Category.class);
-        assertEquals("testCategory", objectFromController.getName());
+        assertEquals("testCategory1", objectFromController.getName());
         assertEquals((Long) 1L, objectFromController.getCategoryId());
         verify(categoryServiceMock, times(1)).getCategoryById(1L);
         verify(categoryServiceMock, times(1)).deleteCategoryByCategoryId(1L);
