@@ -1,12 +1,12 @@
 databaseChangeLog:
 - changeSet:
-    id: 1536335575798-1
+    id: 1538143507264-1
     author: jeroen (generated)
     changes:
     - createSequence:
         sequenceName: hibernate_sequence
 - changeSet:
-    id: 1536335575798-2
+    id: 1538143507264-2
     author: jeroen (generated)
     changes:
     - createTable:
@@ -16,16 +16,16 @@ databaseChangeLog:
             constraints:
               primaryKey: true
               primaryKeyName: categoryPK
-            name: categoryId
+            name: category_id
             type: BIGINT
         - column:
             constraints:
               nullable: false
-            name: name
+            name: category_name
             type: VARCHAR(255)
         tableName: category
 - changeSet:
-    id: 1536335575798-3
+    id: 1538143507264-3
     author: jeroen (generated)
     changes:
     - createTable:
@@ -35,10 +35,13 @@ databaseChangeLog:
             constraints:
               primaryKey: true
               primaryKeyName: taskPK
-            name: taskId
+            name: task_id
             type: BIGINT
         - column:
-            name: date
+            name: completed
+            type: BOOLEAN
+        - column:
+            name: deadline
             type: TIMESTAMP WITHOUT TIME ZONE
         - column:
             constraints:
@@ -48,22 +51,22 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: name
+            name: task_name
             type: VARCHAR(255)
         - column:
-            name: categoryId
+            name: category_id
             type: BIGINT
         tableName: task
 - changeSet:
-    id: 1536335575798-4
+    id: 1538143507264-4
     author: jeroen (generated)
     changes:
     - addForeignKeyConstraint:
-        baseColumnNames: categoryId
+        baseColumnNames: category_id
         baseTableName: task
-        constraintName: FKejkhhtgidcb9xbvktx9g4xfe9
+        constraintName: FKkjb4pwpo8oqc8fvkgbmiitsu9
         deferrable: false
         initiallyDeferred: false
-        referencedColumnNames: categoryId
+        referencedColumnNames: category_id
         referencedTableName: category
 
