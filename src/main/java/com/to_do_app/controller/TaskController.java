@@ -61,6 +61,9 @@ public class TaskController {
         if(reqTask.getImportance() != null) {
             newTask.setImportance(reqTask.getImportance());
         }
+        if(reqTask.getCompleted() != null) {
+            newTask.setCompleted(reqTask.getCompleted());
+        }
         taskService.saveTask(newTask);
         return new ResponseEntity(newTask,HttpStatus.ACCEPTED);
     }
@@ -73,6 +76,7 @@ public class TaskController {
         newTask.setCategory(reqTask.getCategory());
         newTask.setImportance(reqTask.getImportance());
         newTask.setDeadline(reqTask.getDeadline());
+        newTask.setCompleted(false);
         taskService.saveTask(newTask);
         return new ResponseEntity(newTask, HttpStatus.CREATED);
     }

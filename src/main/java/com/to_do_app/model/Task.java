@@ -8,8 +8,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.lang.Nullable;
 
 
 @Entity
@@ -31,9 +33,12 @@ public class Task {
     @Column(name = "importance", nullable = false)
     private PriorityTypes importance;
 
+    // Either Low, Medium or High
     @Column(name = "deadline")
     private Date deadline;
-    // Either Low, Medium or High
+
+    @Column(name = "completed")
+    private Boolean completed;
 
     // Getters & Setters
 
@@ -56,5 +61,12 @@ public class Task {
     public Date getDeadline() { return deadline; }
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 }
