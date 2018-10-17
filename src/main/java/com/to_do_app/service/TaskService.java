@@ -8,6 +8,7 @@ import com.to_do_app.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,24 +22,21 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Set<Task> getAllTasks() {
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    public Set<Task> getCategoryFilteredTasks(Category filteringCategory) {
+    public List<Task> getCategoryFilteredTasks(Category filteringCategory) {
         return taskRepository.findAllByCategory(filteringCategory);
     }
 
-    public Set<Task> getImportanceFilteredTasks(PriorityTypes importance) {
-        System.out.println("in Service");
+    public List<Task> getImportanceFilteredTasks(PriorityTypes importance) {
         return taskRepository.findAllByImportance(importance);
     }
 
     public Optional<Task> getTaskById(Long taskId) {
-        Optional<Task> b = taskRepository.findById(taskId);
-        return b;
+        return taskRepository.findById(taskId);
     }
-
 
     public Task saveTask(Task task) {
         return taskRepository.save(task);
@@ -48,7 +46,4 @@ public class TaskService {
         taskRepository.deleteById(taskId);
     }
 
-//    public Set<Task> getTasksBySearch(String name, String category, PriorityTypes importance, Date deadline){
-//        return taskRepository.findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrImportanceContainingIgnoreCaseOrDeadlineContainingIgnoreCase(name, category, importance, deadline);
-//    }
 }

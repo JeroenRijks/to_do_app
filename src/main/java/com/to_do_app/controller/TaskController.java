@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import javax.xml.ws.Service;
 import java.util.Optional;
 import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/api/task")   // the base url for tasks
@@ -27,7 +28,7 @@ public class TaskController {
 
     @GetMapping(path = "")
     public ResponseEntity getAllTasks(){
-        Set<Task> fetchedTasks = taskService.getAllTasks();
+        List<Task> fetchedTasks = taskService.getAllTasks();
         if(fetchedTasks.isEmpty()){
             return new ResponseEntity<>(new Message("The task list is empty."),HttpStatus.NOT_FOUND);
         }
@@ -51,14 +52,14 @@ public class TaskController {
         if(!filteringCategory.isPresent()) {
             return new ResponseEntity<>(new Message("The category you are filtering by does not exist"), HttpStatus.NOT_FOUND);
         } else {
-            Set<Task> categoryFilteredTasks = taskService.getCategoryFilteredTasks(filteringCategory.get());
+            List<Task> categoryFilteredTasks = taskService.getCategoryFilteredTasks(filteringCategory.get());
             return new ResponseEntity<>(categoryFilteredTasks, HttpStatus.ACCEPTED);
         }
     }
 
     @GetMapping(path = "/filterByImportance/{importance}")
     public ResponseEntity filterTaskByImportance(@PathVariable(value = "importance") PriorityTypes importance) {
-        Set<Task> importanceFilteredTasks = taskService.getImportanceFilteredTasks(importance);
+        List<Task> importanceFilteredTasks = taskService.getImportanceFilteredTasks(importance);
         return new ResponseEntity<>(importanceFilteredTasks, HttpStatus.ACCEPTED);
     }
 
