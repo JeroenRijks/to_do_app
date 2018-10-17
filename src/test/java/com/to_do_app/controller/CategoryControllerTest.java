@@ -71,7 +71,7 @@ public class CategoryControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
 
         testTask = new Task();
-        testTask.setId(1L);  // The L is for the long data type
+        testTask.setTaskId(1L);  // The L is for the long data type
         testTask.setName("testTask");
         testTask.setImportance(PriorityTypes.LOW);
         testTask.setCategory(testCategory1);
@@ -96,7 +96,7 @@ public class CategoryControllerTest {
         given(categoryServiceMock.getAllCategories()).willReturn(testCategories);
         given(categoryServiceMock.getCategoryById(anyLong())).willReturn(Optional.of(testCategory1));
         given(categoryServiceMock.saveCategory(any(Category.class))).willReturn(testCategory1);
-//        given(categoryServiceMock.deleteCategoryByCategoryId(anyLong())).willReturn(Optional.of(testCategory1));
+//        given(categoryServiceMock.deleteCategoryById(anyLong())).willReturn(Optional.of(testCategory1));
         // TODO: Go through controller and service void stuff, return httpstatus
         // More givens here
     }
@@ -195,7 +195,7 @@ public class CategoryControllerTest {
         assertEquals("testCategory1", objectFromController.getName());
         assertEquals((Long) 1L, objectFromController.getCategoryId());
         verify(categoryServiceMock, times(1)).getCategoryById(1L);
-        verify(categoryServiceMock, times(1)).deleteCategoryByCategoryId(1L);
+        verify(categoryServiceMock, times(1)).deleteCategoryById(1L);
         verifyNoMoreInteractions(categoryServiceMock);
     }
 

@@ -49,7 +49,7 @@ public class CategoryServiceTest {
         testCategory2.setName("testCategory2");
 
         testTask = new Task();
-        testTask.setId(1L);  // The L is for the long data type
+        testTask.setTaskId(1L);  // The L is for the long data type
         testTask.setName("testTask");
         testTask.setImportance(PriorityTypes.LOW);
         testTask.setCategory(testCategory1);
@@ -88,7 +88,7 @@ public class CategoryServiceTest {
 
     @Test
     public void testDeleteCategoryByCategoryId(){
-        ResponseEntity responseEntity = categoryService.deleteCategoryByCategoryId(1L);
+        ResponseEntity responseEntity = categoryService.deleteCategoryById(1L);
         assertEquals(responseEntity,ResponseEntity.ok().build());
         verify(categoryRepositoryMock,times(1)).deleteById(1L);
         verifyNoMoreInteractions(categoryRepositoryMock);

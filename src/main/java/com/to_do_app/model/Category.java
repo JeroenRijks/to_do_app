@@ -2,6 +2,7 @@ package com.to_do_app.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,30 +22,27 @@ public class Category implements Serializable {
     private Long categoryId;
 
 
-    @JsonIgnore // Prevents infinite recursion between calling categories and tasks
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore // Prevents  recursion between categories and tasks
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // cascade = CascadeType.ALL
     private List<Task> task;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Long getCategoryId() {
         return categoryId;
     }
-
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Task> getTask() {
         return task;
     }
-
     public void setTask(List<Task> task) {
         this.task = task;
     }

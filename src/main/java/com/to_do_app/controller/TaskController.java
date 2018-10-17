@@ -1,31 +1,37 @@
 package com.to_do_app.controller;
 
-
 import com.to_do_app.model.Category;
+import com.to_do_app.model.PriorityTypes;
 import com.to_do_app.model.Task;
 import com.to_do_app.service.TaskService;
+import com.to_do_app.service.CategoryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
-import javax.xml.ws.Response;
+import javax.xml.ws.Service;
 import java.util.Optional;
 import java.util.Set;
 
 @RestController
 @RequestMapping(path="/api/task")   // the base url for tasks
+@CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping(path = "/")
+    @Autowired
+    private CategoryService categoryService;
+
+    @GetMapping(path = "")
     public ResponseEntity getAllTasks(){
-    Set<Task> fetchedTasks = taskService.getAllTasks();
-    if(fetchedTasks.isEmpty()){
-        return new ResponseEntity<>(new Message("The task list is empty."),HttpStatus.NOT_FOUND);
-    }
-    return new ResponseEntity(fetchedTasks,HttpStatus.ACCEPTED);
+        Set<Task> fetchedTasks = taskService.getAllTasks();
+        if(fetchedTasks.isEmpty()){
+            return new ResponseEntity<>(new Message("The task list is empty."),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(fetchedTasks,HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/{taskId}")
@@ -38,7 +44,24 @@ public class TaskController {
         return new ResponseEntity(fetchedTask.get(),HttpStatus.ACCEPTED); //if statement to return message if the taskId doesn't exist.
     }
 
-    // WAS COMMENTED OUT.
+    @GetMapping(path = "/filterByCategory/{categoryId}")
+    public ResponseEntity filterTaskByCategoryId(@PathVariable(value = "categoryId") Long categoryId) {
+        Optional<Category> filteringCategory;
+        filteringCategory = categoryService.getCategoryById(categoryId);
+        if(!filteringCategory.isPresent()) {
+            return new ResponseEntity<>(new Message("The category you are filtering by does not exist"), HttpStatus.NOT_FOUND);
+        } else {
+            Set<Task> categoryFilteredTasks = taskService.getCategoryFilteredTasks(filteringCategory.get());
+            return new ResponseEntity<>(categoryFilteredTasks, HttpStatus.ACCEPTED);
+        }
+    }
+
+    @GetMapping(path = "/filterByImportance/{importance}")
+    public ResponseEntity filterTaskByImportance(@PathVariable(value = "importance") PriorityTypes importance) {
+        Set<Task> importanceFilteredTasks = taskService.getImportanceFilteredTasks(importance);
+        return new ResponseEntity<>(importanceFilteredTasks, HttpStatus.ACCEPTED);
+    }
+
     @PutMapping(path = "/{taskId}")
     public ResponseEntity updateTask(@PathVariable(value = "taskId") Long taskId, @RequestBody Task reqTask) {
         Optional<Task> fetchedTask;
@@ -92,6 +115,5 @@ public class TaskController {
         taskService.deleteTaskById(taskId);
         return new ResponseEntity(fetchedTask,HttpStatus.ACCEPTED);
     }
-
 }
 

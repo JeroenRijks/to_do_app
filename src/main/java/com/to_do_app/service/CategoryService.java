@@ -28,10 +28,9 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public ResponseEntity deleteCategoryByCategoryId(Long categoryId){
+    public ResponseEntity deleteCategoryById(Long categoryId){
         categoryRepository.deleteById(categoryId);
         return ResponseEntity.ok().build();
-        // TODO: VOID STUFF
     }
 
 }

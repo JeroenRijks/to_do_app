@@ -33,17 +33,14 @@ public class Task {
     @Column(name = "importance", nullable = false)
     private PriorityTypes importance;
 
-    // Either Low, Medium or High
     @Column(name = "deadline")
     private Date deadline;
 
     @Column(name = "completed")
     private Boolean completed;
 
-    // Getters & Setters
-
-    public Long getId() { return taskId; }
-    public void setId(Long taskId) { this.taskId = taskId; }
+    public Long getTaskId() { return taskId; }
+    public void setTaskId(Long taskId) { this.taskId = taskId; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

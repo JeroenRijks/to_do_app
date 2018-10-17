@@ -1,5 +1,6 @@
 package com.to_do_app.repository;
 
+import com.to_do_app.model.Category;
 import com.to_do_app.model.PriorityTypes;
 import org.springframework.data.repository.CrudRepository;
 import com.to_do_app.model.Task;
@@ -12,6 +13,10 @@ import java.util.Set;
 public interface TaskRepository extends CrudRepository<Task, Long> {
     Set<Task> findAll();
 
+    Set<Task> findAllByCategory(Category category);
+
+    Set<Task> findAllByImportance(PriorityTypes importance);
+
     void deleteById(Long taskId);
-//    Set<Task> findByNameContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrImportanceContainingIgnoreCaseOrDeadlineContainingIgnoreCase(String name, String category, PriorityTypes importance, Date deadline);
+
 }

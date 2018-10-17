@@ -1,6 +1,8 @@
 package com.to_do_app.service;
 
 
+import com.to_do_app.model.Category;
+import com.to_do_app.model.PriorityTypes;
 import com.to_do_app.model.Task;
 import com.to_do_app.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,15 @@ public class TaskService {
 
     public Set<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+
+    public Set<Task> getCategoryFilteredTasks(Category filteringCategory) {
+        return taskRepository.findAllByCategory(filteringCategory);
+    }
+
+    public Set<Task> getImportanceFilteredTasks(PriorityTypes importance) {
+        System.out.println("in Service");
+        return taskRepository.findAllByImportance(importance);
     }
 
     public Optional<Task> getTaskById(Long taskId) {
