@@ -26,7 +26,7 @@ public class Category implements Serializable {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // cascade = CascadeType.ALL
     private List<Task> task;
 
-    public Long getCategoryId() {
+    public Int getCategoryId() {
         return categoryId;
     }
     public void setCategoryId(Long categoryId) {
