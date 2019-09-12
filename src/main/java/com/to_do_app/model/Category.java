@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "category")
 public class Category implements Serializable {
     @Column(name = "category_name", nullable = false)
-    private String name;
+    private Integer name;
 
     @Id
     @NotNull
@@ -33,7 +33,7 @@ public class Category implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public String getName() {
+    public Integer getName() {
         return name;
     }
     public void setName(String name) {
